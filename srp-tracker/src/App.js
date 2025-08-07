@@ -1,64 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./App.css"; // We'll style separately
 
 function App() {
-  const [projects, setProjects] = useState([]);
-  const [form, setForm] = useState({
+  const [project, setProject] = useState({
     title: "",
     description: "",
-    supervisor: ""
+    supervisor: "",
   });
+  const [projects, setProjects] = useState([]);
 
-  // Load projects on page load
+  const handleChange = (e) => {
+    setProject({ ...project, [e.target.name]: e.target.value });
+  };
+
+  const addProject = async () => {
+    if (!project.title || !project.description || !project.supervisor) return;
+    await axios.post("http://localhost:5000/api/projects", FormData);
+    setProject({ title: "", description: "", supervisor: "" });
+    fetchProjects();
+  };
+
+  const fetchProjects = async () => {
+    const res = await axios.get("http://localhost:5000/projects");
+    setProjects(res.data);
+  };
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/projects")
-      .then(res => setProjects(res.data))
-      .catch(err => console.log(err));
+    fetchProjects();
   }, []);
 
-  // Handle form change
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  // Handle form submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form)
-    axios.post("http://localhost:5000/api/projects", form)
-      .then(res => {
-        setProjects([...projects, res.data]);
-        setForm({ title: "", description: "", supervisor: "" });
-      })
-      .catch(err => console.log(err));
-  };
-
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container">
       <h1>SRP Project Tracker</h1>
-
-      <form onSubmit={handleSubmit}>
-        <input name="title" value={form.title} onChange={handleChange} placeholder="Title" required />
-        <br />
-        <input name="description" value={form.description} onChange={handleChange} placeholder="Description" required />
-        <br />
-        <input name="supervisor" value={form.supervisor} onChange={handleChange} placeholder="Supervisor" required />
-        <br />
-        <button type="submit">Add Project</button>
-      </form>
+      <div className="form">
+        <input
+          type="text"
+          name="title"
+          value={project.title}
+          onChange={handleChange}
+          placeholder="Project Title"
+        />
+        <input
+          type="text"
+          name="description"
+          value={project.description}
+          onChange={handleChange}
+          placeholder="Description"
+        />
+        <input
+          type="text"
+          name="supervisor"
+          value={project.supervisor}
+          onChange={handleChange}
+          placeholder="Supervisor Name"
+        />
+        <button onClick={addProject}>Add Project</button>
+      </div>
 
       <h2>All Projects</h2>
-      <ul>
-        {projects.map((proj, index) => (
-          <li key={index}>
-            <strong>{proj.title}</strong> - {proj.description} (Supervisor: {proj.supervisor})
-          </li>
+      <div className="projects">
+        {projects.map((p, i) => (
+          <div className="project-card" key={i}>
+            <h3>{p.title}</h3>
+            <p>{p.description}</p>
+            <p><strong>Supervisor:</strong> {p.supervisor}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
 
 export default App;
+
 
 

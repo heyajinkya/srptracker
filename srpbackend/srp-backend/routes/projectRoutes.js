@@ -2,69 +2,32 @@ const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
 
-// ✅ GET all projects
+// Get all projects
 router.get("/", async (req, res) => {
-  try {
-    const projects = await Project.find();
-    res.json(projects);
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    res.status(500).json({ error: "Server error while fetching projects" });
-  }
+  const projects = await Project.find();
+  res.json(projects);
 });
 
-// ✅ POST new project (including dropdown values)
+// Create new project
 router.post("/", async (req, res) => {
-  try {
-    const {
-      name,
-      status,
-      startDate,
-      endDate,
-      progress,
-      title,
-      description,
-      supervisor,
-      motorName,    // new dropdown field
-      processName,  // new dropdown field
-    } = req.body;
-
-    const project = new Project({
-      name,
-      status,
-      startDate,
-      endDate,
-      progress,
-      title,
-      description,
-      supervisor,
-      motorName,
-      processName,
-    });
-
-    console.log("Saving project:", project);
-
-    await project.save();
-    res.json(project);
-  } catch (error) {
-    console.error("Error saving project:", error);
-    res.status(500).json({ error: "Server error while saving project" });
-  }
+  const project = new Project(req.body);
+  console.log(project);
+  await project.save();
+  res.json(project);
 });
 
-// ✅ GET motors list (dropdown data)
+// Get list of motors
 router.get("/motors", (req, res) => {
-  const motorOptions = ["Motor A", "Motor B", "Motor C", "Motor D"];
-  res.json(motorOptions);
+  res.json(["Motor A", "Motor B", "Motor C"]);
 });
 
-// ✅ GET processes list (dropdown data)
+// Get list of processes
 router.get("/processes", (req, res) => {
-  const processOptions = ["Mixing", "Casting", "Curing", "Finishing"];
-  res.json(processOptions);
+  res.json(["Mixing", "Casting", "Curing"]);
 });
 
 module.exports = router;
+
 
 
 

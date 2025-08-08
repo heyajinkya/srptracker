@@ -12,18 +12,17 @@ function App() {
 
   // ✅ Fetch projects and dropdown options from backend
   useEffect(() => {
-    // Fetch projects
     fetch("http://localhost:5000/projects")
       .then((res) => res.json())
       .then((data) => setProjects(data));
 
-    // Fetch dropdown options
-    fetch("http://localhost:5000/projects/options")
+    fetch("http://localhost:5000/projects/motors")
       .then((res) => res.json())
-      .then((data) => {
-        setMotorOptions(data.motors || []);
-        setProcessOptions(data.processes || []);
-      });
+      .then((data) => setMotorOptions(data));
+
+    fetch("http://localhost:5000/projects/processes")
+      .then((res) => res.json())
+      .then((data) => setProcessOptions(data));
   }, []);
 
   const addProject = () => {
@@ -140,6 +139,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

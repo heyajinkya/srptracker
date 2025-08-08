@@ -13,14 +13,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ GET dropdown options (motors & processes)
-router.get("/options", (req, res) => {
-  const motorOptions = ["Motor A", "Motor B", "Motor C"];
-  const processOptions = ["Mixing", "Casting", "Curing"];
-
-  res.json({ motors: motorOptions, processes: processOptions });
-});
-
 // ✅ POST new project (including dropdown values)
 router.post("/", async (req, res) => {
   try {
@@ -33,8 +25,8 @@ router.post("/", async (req, res) => {
       title,
       description,
       supervisor,
-      motorName,    // dropdown field
-      processName,  // dropdown field
+      motorName,    // new dropdown field
+      processName,  // new dropdown field
     } = req.body;
 
     const project = new Project({
@@ -60,7 +52,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ✅ Get Motor Options
+router.get("/motors", (req, res) => {
+  const motors = ["Motor A", "Motor B", "Motor C"];
+  res.json(motors);
+});
+
+// ✅ Get Process Options
+router.get("/processes", (req, res) => {
+  const processes = ["Mixing", "Casting", "Curing"];
+  res.json(processes);
+});
+
 module.exports = router;
+
 
 
  

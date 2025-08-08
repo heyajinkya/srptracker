@@ -16,7 +16,7 @@ function App() {
 
   const addProject = async () => {
     if (!project.title || !project.description || !project.supervisor) return;
-    await axios.post("http://localhost:5000/api/projects", FormData);
+    await axios.post("http://localhost:5000/api/projects", project);
     setProject({ title: "", description: "", supervisor: "" });
     fetchProjects();
   };

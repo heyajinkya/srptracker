@@ -52,19 +52,20 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ✅ Get Motor Options
+// ✅ GET motors list (dropdown data)
 router.get("/motors", (req, res) => {
-  const motors = ["Motor A", "Motor B", "Motor C"];
-  res.json(motors);
+  const motorOptions = ["Motor A", "Motor B", "Motor C", "Motor D"];
+  res.json(motorOptions);
 });
 
-// ✅ Get Process Options
+// ✅ GET processes list (dropdown data)
 router.get("/processes", (req, res) => {
-  const processes = ["Mixing", "Casting", "Curing"];
-  res.json(processes);
+  const processOptions = ["Mixing", "Casting", "Curing", "Finishing"];
+  res.json(processOptions);
 });
 
 module.exports = router;
+
 
 
 

@@ -15,17 +15,17 @@ function App() {
 
   // Fetch projects
   const fetchProjects = async () => {
-    const res = await axios.get("http://localhost:5000/projects");
+    const res = await axios.get("http://localhost:5000/api/projects");
     setProjects(res.data);
   };
 
   // Fetch motors and processes from backend
   const fetchDropdownData = async () => {
-    const motorsRes = await axios.get("http://localhost:5000/projects/motors");
+    const motorsRes = await axios.get("http://localhost:5000/api/projects/motors");
     setMotors(motorsRes.data);
 
     const processesRes = await axios.get(
-      "http://localhost:5000/projects/processes"
+      "http://localhost:5000/api/projects/processes"
     );
     setProcesses(processesRes.data);
   };

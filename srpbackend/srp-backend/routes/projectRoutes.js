@@ -1,54 +1,68 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Project = require("../models/project");
+const Project = require('../models/projectModel');
 
-// Get all projects
-router.get("/projects", async (req, res) => {
+// ---- Static lists for dropdowns ----
+const motorsList = [
+  "Motor A",
+  "Motor B",
+  "Motor C",
+  "Motor D"
+];
+
+const processesList = [
+  "Casting",
+  "Curing",
+  "Assembly",
+  "Inspection"
+];
+
+// ---- GET all projects ----
+router.get('/projects', async (req, res) => {
   try {
     const projects = await Project.find();
     res.json(projects);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Add a new project
-router.post("/projects", async (req, res) => {
+// ---- POST new project ----
+router.post('/projects', async (req, res) => {
   try {
-    console.log("Incoming Project Data:", req.body); // Debug log
+    const { name, code, date, motor, process } = req.body;
 
-    const { name, scientist, date, motor, process } = req.body;
-
-    if (!name || !scientist || !date || !motor || !process) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!name || !code || !date || !motor || !process) {
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
-    const project = new Project({
+    const newProject = new Project({
       name,
-      scientist,
+      code,
       date,
       motor,
-      process,
+      process
     });
 
-    const newProject = await project.save();
-    res.status(201).json(newProject);
+    await newProject.save();
+    res.json({ message: 'Project added successfully' });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Get motors list
-router.get("/motors", (req, res) => {
-  res.json(["Motor A", "Motor B", "Motor C"]);
+// ---- GET motors ----
+router.get('/motors', (req, res) => {
+  res.json(motorsList);
 });
 
-// Get processes list
-router.get("/processes", (req, res) => {
-  res.json(["Mixing", "Casting", "Curing"]);
+// ---- GET processes ----
+router.get('/processes', (req, res) => {
+  res.json(processesList);
 });
 
 module.exports = router;
+
 
 
 

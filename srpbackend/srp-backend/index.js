@@ -13,7 +13,7 @@ mongoose.connect("mongodb://localhost:27017/srpdb", {
 }).then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-app.use("/api/projects", projectRoutes);
+app.use("/api", projectRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

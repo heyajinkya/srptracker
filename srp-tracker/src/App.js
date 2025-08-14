@@ -1,58 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [projects, setProjects] = useState([]);
-  const [name, setName] = useState('');
-  const [code, setCode] = useState('');
-  const [date, setDate] = useState('');
-  const [motor, setMotor] = useState('');
-  const [process, setProcess] = useState('');
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [date, setDate] = useState("");
+  const [motor, setMotor] = useState("");
+  const [process, setProcess] = useState("");
   const [motorsList, setMotorsList] = useState([]);
   const [processesList, setProcessesList] = useState([]);
 
   // Fetch projects, motors, processes
   useEffect(() => {
-    fetch('/api/projects')
-      .then(res => res.json())
-      .then(data => setProjects(data))
-      .catch(err => console.error(err));
+    fetch("http://127.0.0.1:8000/api/projects")
+      .then((res) => res.json())
+      .then((data) => setProjects(data))
+      .catch((err) => console.error(err));
 
-    fetch('/api/motors')
-      .then(res => res.json())
-      .then(data => setMotorsList(data))
-      .catch(err => console.error(err));
+    fetch("http://127.0.0.1:8000/api/motors")
+      .then((res) => res.json())
+      .then((data) => setMotorsList(data))
+      .catch((err) => console.error(err));
 
-    fetch('/api/processes')
-      .then(res => res.json())
-      .then(data => setProcessesList(data))
-      .catch(err => console.error(err));
+    fetch("http://127.0.0.1:8000/api/processes")
+      .then((res) => res.json())
+      .then((data) => setProcessesList(data))
+      .catch((err) => console.error(err));
   }, []);
 
   // Add new project
   const addProject = () => {
     if (!name || !code || !date || !motor || !process) {
-      alert('Please fill all fields');
+      alert("Please fill all fields");
       return;
     }
 
-    fetch('/api/projects', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, code, date, motor, process })
+    fetch("http://127.0.0.1:8000/api/projects", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, code, date, motor, process }),
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         alert(data.message);
         // Refresh list
-        return fetch('/api/projects');
+        return fetch("http://127.0.0.1:8000/api/projects");
       })
-      .then(res => res.json())
-      .then(data => setProjects(data))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((data) => setProjects(data))
+      .catch((err) => console.error(err));
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: "20px" }}>
       <h1>SRP Tracker</h1>
       <input
         type="text"
@@ -76,7 +76,9 @@ function App() {
       <select value={motor} onChange={(e) => setMotor(e.target.value)}>
         <option value="">Select Motor</option>
         {motorsList.map((m, index) => (
-          <option key={index} value={m}>{m}</option>
+          <option key={index} value={m}>
+            {m}
+          </option>
         ))}
       </select>
 
@@ -84,7 +86,9 @@ function App() {
       <select value={process} onChange={(e) => setProcess(e.target.value)}>
         <option value="">Select Process</option>
         {processesList.map((p, index) => (
-          <option key={index} value={p}>{p}</option>
+          <option key={index} value={p}>
+            {p}
+          </option>
         ))}
       </select>
 
@@ -103,14 +107,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-

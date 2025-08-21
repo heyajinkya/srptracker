@@ -1,11 +1,15 @@
- const mongoose = require('mongoose');
+// srptracker-master/srptracker-main/srp-backend/models/projectModel.js
+
+const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  code: { type: String, required: true },
-  date: { type: Date, required: true },
-  motor: { type: String, required: true },
-  process: { type: String, required: true }
+  description: { type: String, required: true },
+  process: { type: String, required: true },
+  personnel: [{ type: String }], // personnel should be an array
 });
 
-module.exports = mongoose.model('Project', projectSchema);
+const Project = mongoose.model('Project', projectSchema);
+
+module.exports = Project;
+

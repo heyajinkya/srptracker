@@ -1,43 +1,76 @@
-// srptracker-master/srptracker-main/srpbackend/srp-backend/routes/projectRoutes.js
+const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const Project = require("../models/project"); // make sure file name matches exactly
 
-const express = require('express');
-const Project = require('../models/projectModel');  // Ensure the path is correct
 const router = express.Router();
 
-// POST endpoint to add a project
-router.post('/api/projects', async (req, res) => {
+// ===== Multer Setup for File Uploads =====
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../uploads"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage });
+
+// ===== POST /projects (Add new project) =====
+router.post("/projects", upload.single("photo"), async (req, res) => {
   try {
-    const { name, description, process, personnel } = req.body;
-
-    // Validate required fields
-    if (!name || !description || !process) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    console.log("📥 Received request body:", req.body);
+    if (req.file) {
+      console.log("📸 Received file:", req.file.originalname);
     }
 
-    // Ensure personnel is an array before saving
-    if (personnel && !Array.isArray(personnel)) {
-      return res.status(400).json({ error: 'Personnel should be an array' });
-    }
+    const {
+      name,
+      code,
+      dateOfSanction,
+      objective,
+      scopeLab,
+      scopeSRP,
+      drdsOfficers,
+      drtcOfficers,
+      gocoManpower,
+    } = req.body;
 
-    // Create a new project
+    // Create new project document
     const newProject = new Project({
       name,
-      description,
-      process,
-      personnel,
+      code,
+      dateOfSanction,
+      objective,
+      scopeLab,
+      scopeSRP,
+      drdsOfficers: drdsOfficers ? drdsOfficers.split(",") : [],
+      drtcOfficers: drtcOfficers ? drtcOfficers.split(",") : [],
+      gocoManpower: gocoManpower ? gocoManpower.split(",") : [],
+      photo: req.file ? `/uploads/${req.file.filename}` : null,
     });
 
-    // Save the project to the database
     await newProject.save();
-    res.status(200).json({ message: 'Project added successfully' });
-  } catch (error) {
-    console.error('Error saving project:', error);
-    res.status(500).json({ error: 'Server error, try again later' });
+    console.log("✅ Project saved:", newProject);
+
+    res.json({ message: "Project added successfully" });
+  } catch (err) {
+    console.error("❌ Error saving project:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ===== GET all projects =====
+router.get("/projects", async (req, res) => {
+  try {
+    const projects = await Project.find();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
 module.exports = router;
-
 
 
 

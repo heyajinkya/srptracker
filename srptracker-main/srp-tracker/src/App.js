@@ -84,16 +84,54 @@ function App() {
   return (
     <div style={{ padding: "20px" }}>
       <h2>SRP Tracker - Add Project</h2>
-      <form onSubmit={handleSubmit} style={{ display: "grid", gap: "10px", maxWidth: "600px" }}>
-        <input type="text" name="name" placeholder="Project Name" value={formData.name} onChange={handleChange} required />
-        <input type="text" name="code" placeholder="Project Code" value={formData.code} onChange={handleChange} required />
-        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "grid", gap: "10px", maxWidth: "600px" }}
+      >
+        <input
+          type="text"
+          name="name"
+          placeholder="Project Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="code"
+          placeholder="Project Code"
+          value={formData.code}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+        />
 
-        <textarea name="objective" placeholder="Objective as per PDR" value={formData.objective} onChange={handleChange} />
+        <textarea
+          name="objective"
+          placeholder="Objective as per PDR"
+          value={formData.objective}
+          onChange={handleChange}
+        />
 
-        <textarea name="scopeLab" placeholder="Scope of Work of Laboratory" value={formData.scopeLab} onChange={handleChange} />
+        <textarea
+          name="scopeLab"
+          placeholder="Scope of Work of Laboratory"
+          value={formData.scopeLab}
+          onChange={handleChange}
+        />
 
-        <textarea name="scopeSRP" placeholder="Scope of SRP" value={formData.scopeSRP} onChange={handleChange} />
+        <textarea
+          name="scopeSRP"
+          placeholder="Scope of SRP"
+          value={formData.scopeSRP}
+          onChange={handleChange}
+        />
 
         {/* DRDS Officers */}
         <label>DRDS Officers:</label>
@@ -105,10 +143,17 @@ function App() {
               onChange={(e) => handleArrayChange(e, index, "drdsOfficers")}
               placeholder="Enter DRDS Officer"
             />
-            <button type="button" onClick={() => handleRemoveField("drdsOfficers", index)}>❌</button>
+            <button
+              type="button"
+              onClick={() => handleRemoveField("drdsOfficers", index)}
+            >
+              ❌
+            </button>
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField("drdsOfficers")}>➕ Add DRDS Officer</button>
+        <button type="button" onClick={() => handleAddField("drdsOfficers")}>
+          ➕ Add DRDS Officer
+        </button>
 
         {/* DRTC Officers */}
         <label>DRTC Officers:</label>
@@ -120,10 +165,17 @@ function App() {
               onChange={(e) => handleArrayChange(e, index, "drtcOfficers")}
               placeholder="Enter DRTC Officer"
             />
-            <button type="button" onClick={() => handleRemoveField("drtcOfficers", index)}>❌</button>
+            <button
+              type="button"
+              onClick={() => handleRemoveField("drtcOfficers", index)}
+            >
+              ❌
+            </button>
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField("drtcOfficers")}>➕ Add DRTC Officer</button>
+        <button type="button" onClick={() => handleAddField("drtcOfficers")}>
+          ➕ Add DRTC Officer
+        </button>
 
         {/* GoCo Manpower */}
         <label>GoCo Manpower:</label>
@@ -135,10 +187,17 @@ function App() {
               onChange={(e) => handleArrayChange(e, index, "gocoManpower")}
               placeholder="Enter Worker Name"
             />
-            <button type="button" onClick={() => handleRemoveField("gocoManpower", index)}>❌</button>
+            <button
+              type="button"
+              onClick={() => handleRemoveField("gocoManpower", index)}
+            >
+              ❌
+            </button>
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField("gocoManpower")}>➕ Add Worker</button>
+        <button type="button" onClick={() => handleAddField("gocoManpower")}>
+          ➕ Add Worker
+        </button>
 
         <input type="file" accept="image/jpeg" onChange={handleFileChange} />
 
@@ -149,13 +208,20 @@ function App() {
       <ul>
         {projects.map((p) => (
           <li key={p._id}>
-            <strong>{p.name}</strong> ({p.code}) - {new Date(p.date).toLocaleDateString()}
+            <strong>{p.name}</strong> ({p.code}) -{" "}
+            {new Date(p.date).toLocaleDateString()}
             <br />
             DRDS: {p.drdsOfficers?.join(", ")} <br />
             DRTC: {p.drtcOfficers?.join(", ")} <br />
             GoCo: {p.gocoManpower?.join(", ")}
             <br />
-            {p.photo && <img src={`http://localhost:8000${p.photo}`} alt="project" width="100" />}
+            {p.photo && (
+              <img
+                src={`http://localhost:8000${p.photo}`}
+                alt="project"
+                width="100"
+              />
+            )}
           </li>
         ))}
       </ul>
@@ -164,7 +230,3 @@ function App() {
 }
 
 export default App;
-
-
-
-

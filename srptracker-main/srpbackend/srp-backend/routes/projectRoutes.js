@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // ===== POST /projects (Add new project) =====
-router.post("/projects", upload.single("photo"), async (req, res) => {
+router.post("/", upload.single("photo"), async (req, res) => {
   try {
     console.log("📥 Received request body:", req.body);
     if (req.file) {
@@ -61,7 +61,7 @@ router.post("/projects", upload.single("photo"), async (req, res) => {
 });
 
 // ===== GET all projects =====
-router.get("/projects", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const projects = await Project.find();
     res.json(projects);
@@ -71,6 +71,3 @@ router.get("/projects", async (req, res) => {
 });
 
 module.exports = router;
-
-
-

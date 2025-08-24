@@ -1,9 +1,17 @@
 const express = require("express");
 const multer = require("multer");
+const fs = require("fs");
 const path = require("path");
 const Project = require("../models/project"); // make sure file name matches exactly
 
 const router = express.Router();
+
+// Create uploads directory if it doesn't exist
+const uploadDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log(`Created uploads directory at ${uploadDir}`);
+}
 
 // ===== Multer Setup for File Uploads =====
 const storage = multer.diskStorage({
@@ -27,7 +35,7 @@ router.post("/", upload.single("photo"), async (req, res) => {
     const {
       name,
       code,
-      dateOfSanction,
+      date, // Changed from dateOfSanction to match what the frontend sends
       objective,
       scopeLab,
       scopeSRP,
@@ -40,7 +48,7 @@ router.post("/", upload.single("photo"), async (req, res) => {
     const newProject = new Project({
       name,
       code,
-      dateOfSanction,
+      date, // Changed to use the date field from the request
       objective,
       scopeLab,
       scopeSRP,

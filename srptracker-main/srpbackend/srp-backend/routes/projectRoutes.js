@@ -52,9 +52,24 @@ router.post("/", upload.single("photo"), async (req, res) => {
       objective,
       scopeLab,
       scopeSRP,
-      drdsOfficers: drdsOfficers ? drdsOfficers.split(",") : [],
-      drtcOfficers: drtcOfficers ? drtcOfficers.split(",") : [],
-      gocoManpower: gocoManpower ? gocoManpower.split(",") : [],
+      drdsOfficers:
+        typeof drdsOfficers == "string"
+          ? drdsOfficers.split(",")
+          : drdsOfficers.length > 0
+          ? drdsOfficers
+          : [],
+      drtcOfficers:
+        typeof drtcOfficers == "string"
+          ? drtcOfficers.split(",")
+          : drtcOfficers.length > 0
+          ? drtcOfficers
+          : [],
+      gocoManpower:
+        typeof gocoManpower == "string"
+          ? gocoManpower.split(",")
+          : gocoManpower.length > 0
+          ? gocoManpower
+          : [],
       photo: req.file ? `/uploads/${req.file.filename}` : null,
     });
 

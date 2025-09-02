@@ -1,40 +1,82 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SRP Project Tracker</title>
-  <link rel="stylesheet" href="template.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRP Tracker - Add Project</title>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="template.css">
 </head>
+
 <body>
-  <header>
-    <h1>SRP Division – Project Tracker</h1>
-  </header>
 
-  <main>
-    <table id="projectTable">
-      <thead>
-        <tr>
-          <th>Project Name</th>
-          <th>Status</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Progress</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Example data -->
-        <tr>
-          <td>Project A</td>
-          <td>Ongoing</td>
-          <td>2023-08-01</td>
-          <td>2024-02-15</td>
-          <td>75%</td>
-        </tr>
-      </tbody>
-    </table>
-  </main>
+    <div class="form-container">
+        <form>
+            <h1>SRP Tracker - Add Project</h1>
 
-  <script src="template.js"></script>
+            <!-- Project Information Section -->
+            <label for="project-name">Project Name</label>
+            <input type="text" id="project-name" name="project-name" placeholder="Enter Project Name">
+
+            <label for="project-code">Project Code</label>
+            <input type="text" id="project-code" name="project-code" placeholder="Enter Project Code">
+
+            <label for="project-date">Project Start Date</label>
+            <input type="date" id="project-date" name="project-date">
+
+            <label for="objective">Objective as per PDR</label>
+            <textarea id="objective" name="objective" rows="3" placeholder="Enter Objective as per PDR"></textarea>
+
+            <label for="scope-lab">Scope of Work of Laboratory</label>
+            <textarea id="scope-lab" name="scope-lab" rows="3" placeholder="Enter Scope of Work of Laboratory"></textarea>
+
+            <label for="scope-srp">Scope of SRP</label>
+            <textarea id="scope-srp" name="scope-srp" rows="3" placeholder="Enter Scope of SRP"></textarea>
+
+            <!-- Officers and Manpower Section -->
+            <section>
+                <label for="drds-officers">DRDS Officers</label>
+                <div id="drds-officers">
+                    <input type="text" name="drds-officer[]" placeholder="Enter DRDS Officer">
+                    <button type="button" class="add-officer">+ Add DRDS Officer</button>
+                </div>
+
+                <label for="drtc-officers">DRTC Officers</label>
+                <div id="drtc-officers">
+                    <input type="text" name="drtc-officer[]" placeholder="Enter DRTC Officer">
+                    <button type="button" class="add-officer">+ Add DRTC Officer</button>
+                </div>
+
+                <label for="goco-manpower">GoCo Manpower</label>
+                <div id="goco-manpower">
+                    <input type="text" name="goco-worker[]" placeholder="Enter Worker Name">
+                    <button type="button" class="add-officer">+ Add Worker</button>
+                </div>
+            </section>
+
+            <label for="project-file">Choose Project File</label>
+            <input type="file" id="project-file" name="project-file">
+
+            <button type="submit">Add Project</button>
+        </form>
+
+        <!-- Existing Projects Section -->
+        <section>
+            <h2>Existing Projects</h2>
+            <ul class="project-list">
+                <li>
+                    <img src="cat.jpg" alt="Project Image">
+                    <span><strong>Project Name</strong> - 8/25/2025</span><br>
+                    <small>DRDS: [DRDS Name], DRTC: [DRTC Name], GoCo: [GoCo Name]</small>
+                </li>
+                <!-- More Projects Can Be Listed Here -->
+            </ul>
+        </section>
+    </div>
+
 </body>
+
 </html>
+
+

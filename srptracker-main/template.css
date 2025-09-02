@@ -1,29 +1,96 @@
- body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-header {
-  background-color: #004d99;
-  color: white;
+/* General form layout */
+form {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr; /* Two-column layout */
+  max-width: 1200px;
+  margin: auto;
   padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+/* Title and form heading */
+h1 {
+  grid-column: span 2;
   text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-table {
-  width: 90%;
-  margin: 20px auto;
-  border-collapse: collapse;
+/* Style for each form group */
+label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 1rem;
 }
 
-th, td {
-  border: 1px solid #aaa;
+input[type="text"], input[type="date"], select, textarea {
+  width: 100%;
   padding: 10px;
-  text-align: center;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-th {
-  background-color: #004d99;
-  color: white;
+/* Input and file group styling */
+input[type="file"] {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* DRDS, DRTC, GoCo sections */
+section {
+  grid-column: span 2;
+}
+
+button.add-officer {
+  background-color: #007BFF;
+  padding: 5px 10px;
+  margin-top: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+button.add-officer:hover {
+  background-color: #0056b3;
+}
+
+/* Project list view */
+ul.project-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul.project-list li {
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  border-radius: 6px;
+}
+
+ul.project-list li img {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+
+

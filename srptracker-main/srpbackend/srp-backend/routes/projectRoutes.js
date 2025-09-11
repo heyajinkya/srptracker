@@ -1,96 +1,64 @@
+// routes/ProjectRoutes.js
 const express = require("express");
-const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
-const Project = require("../models/project"); // make sure file name matches exactly
-
+const Project = require("../models/project"); // Import the updated Project model
 const router = express.Router();
 
-// Create uploads directory if it doesn't exist
-const uploadDir = path.join(__dirname, "../uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  console.log(`Created uploads directory at ${uploadDir}`);
-}
-
-// ===== Multer Setup for File Uploads =====
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage });
-
-// ===== POST /projects (Add new project) =====
-router.post("/", upload.single("photo"), async (req, res) => {
+// Endpoint to handle project creation (including motor process details)
+router.post("/api/projects", async (req, res) => {
   try {
-    console.log("📥 Received request body:", req.body);
-    if (req.file) {
-      console.log("📸 Received file:", req.file.originalname);
-    }
+    // Log the incoming request body for debugging purposes
+    console.log("Request Data:", req.body);
 
-    const {
-      name,
-      code,
-      date, // Changed from dateOfSanction to match what the frontend sends
-      objective,
-      scopeLab,
-      scopeSRP,
-      drdsOfficers,
-      drtcOfficers,
-      gocoManpower,
-    } = req.body;
-
-    // Create new project document
+    // Create a new Project object with the form data
     const newProject = new Project({
-      name,
-      code,
-      date, // Changed to use the date field from the request
-      objective,
-      scopeLab,
-      scopeSRP,
-      drdsOfficers:
-        typeof drdsOfficers == "string"
-          ? drdsOfficers.split(",")
-          : drdsOfficers.length > 0
-          ? drdsOfficers
-          : [],
-      drtcOfficers:
-        typeof drtcOfficers == "string"
-          ? drtcOfficers.split(",")
-          : drtcOfficers.length > 0
-          ? drtcOfficers
-          : [],
-      gocoManpower:
-        typeof gocoManpower == "string"
-          ? gocoManpower.split(",")
-          : gocoManpower.length > 0
-          ? gocoManpower
-          : [],
-      photo: req.file ? `/uploads/${req.file.filename}` : null,
+      name: req.body.name,
+      code: req.body.code,
+      date: req.body.date,
+      objective: req.body.objective,
+      scopeLab: req.body.scopeLab,
+      scopeSRP: req.body.scopeSRP,
+      drdsOfficers: req.body.drdsOfficers,
+      drtcOfficers: req.body.drtcOfficers,
+      gocoManpower: req.body.gocoManpower,
+      photo: req.body.photo, // file path
+
+      // Motor process fields
+      motorName: req.body.motorName,
+      dateOfReceipt: req.body.dateOfReceipt,
+      dateOfInspection: req.body.dateOfInspection,
+      hardwareReadiness: req.body.hardwareReadiness,
+      rawMaterialProcessingDate: req.body.rawMaterialProcessingDate,
+      rawMaterialProcessingText: req.body.rawMaterialProcessingText,
+      batchQualificationDate: req.body.batchQualificationDate,
+      qualificationProperties: req.body.qualificationProperties,
+      masterBatchMixing: req.body.masterBatchMixing,
+      castingOfPropellant: req.body.castingOfPropellant,
+      curingOfMotor: req.body.curingOfMotor,
+      postCureOperation: req.body.postCureOperation,
+      postCureTrimming: req.body.postCureTrimming,
+      looseFlapFilling: req.body.looseFlapFilling,
+      propellantMotorProperties: req.body.propellantMotorProperties,
+      mainMotorNDT: req.body.mainMotorNDT,
+      dateOfReadinessForDispatch: req.body.dateOfReadinessForDispatch,
+      dateOfDispatch: req.body.dateOfDispatch,
+      motorStatusDate: req.body.motorStatusDate,
+      motorStatusText: req.body.motorStatusText,
     });
 
+    // Save the new project to the database
     await newProject.save();
-    console.log("✅ Project saved:", newProject);
 
-    res.json({ message: "Project added successfully" });
+    // Return the saved project as a response
+    res.status(200).json(newProject);
   } catch (err) {
-    console.error("❌ Error saving project:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// ===== GET all projects =====
-router.get("/", async (req, res) => {
-  try {
-    const projects = await Project.find();
-    res.json(projects);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error saving motor process details:", err);
+    // Send a detailed error message back to the client
+    res.status(500).json({ error: `Failed to save motor process details: ${err.message}` });
   }
 });
 
 module.exports = router;
+
+
+
+

@@ -104,10 +104,3 @@ router.post("/motor-process", upload.none(), async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
-
-

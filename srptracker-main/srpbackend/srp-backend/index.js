@@ -3,23 +3,32 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 
-const router = require("./routes/projectRoutes"); // Your routes
+const routes = require("./routes/projectRoutes");
 
 const app = express();
 
-// ====== Middleware ======
+// CORS
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
-app.use(express.json());
 
-// Serve uploaded images statically
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// JSON and URL-encoded parsers for non-multipart requests
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// ====== MongoDB Connection ======
+// Static uploads
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+app.use("/uploads", express.static(uploadsDir));
+
+// MongoDB
 mongoose
   .connect("mongodb://127.0.0.1:27017/srptracker", {
     useNewUrlParser: true,
@@ -28,10 +37,14 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
-// ====== Routes ======
-app.use("/api/projects", router);
+// Mount all API routes under /api so your frontend paths work unchanged
+app.use("/api", routes);
 
-// ====== Start Server ======
+// Health check
+app.get("/api/health", (_req, res) => res.status(200).json({ ok: true }));
+
+// Start
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
 

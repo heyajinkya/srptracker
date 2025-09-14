@@ -22,3 +22,20 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore dependencies
+node_modules/
+
+# Ignore uploaded files
+uploads/
+node_modules
+
+# Ignore environment files
+.env
+
+# Ignore logs
+*.log
+
+# Ignore macOS metadata
+.DS_Store
+
